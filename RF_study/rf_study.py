@@ -15,8 +15,9 @@ y = iris.target
 x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 # n_estimators 多少棵小树构成一个森林 max_leaf_nodes max_leaf_nodes最多多少个叶子结点 n_jobs并行度
-rnd_clf_obj = RandomForestClassifier(n_estimators=15, max_leaf_nodes=16, n_jobs=1)
+rnd_clf_obj = RandomForestClassifier(n_estimators=15, max_leaf_nodes=16, n_jobs=1, oob_score=True)
 rnd_clf_obj.fit(x_train, y_train)
+print('rnd clf oob score', rnd_clf_obj.oob_score_)
 
 y_test_predict = rnd_clf_obj.predict(x_test)
 accuracy_scores = accuracy_score(y_test, y_test_predict)
@@ -31,8 +32,9 @@ for name, score in zip(iris.feature_names, feature_importances):
 log_obj = LogisticRegression()
 svc_obj = SVC()
 dt_clf_obj = DecisionTreeClassifier()
-bagging_obj = BaggingClassifier(DecisionTreeClassifier(), n_estimators=10, n_jobs=1, bootstrap=True)
+bagging_obj = BaggingClassifier(DecisionTreeClassifier(), n_estimators=10, n_jobs=1, bootstrap=True, oob_score=True)
 bagging_obj.fit(x_train, y_train)
+print('bagging oob score', bagging_obj.oob_score_)
 y_bagging_test_predict = bagging_obj.predict(x_test)
 bag_score = bagging_obj.score(x_test, y_test)
 print("====", bag_score)
